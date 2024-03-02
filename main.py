@@ -39,6 +39,8 @@ client_socket.connect((ip, port))
 state = 0
 buttonPlay = Button(100, 100, 300, 100, "Play")
 buttonExit = Button(100, 300, 300, 100, "Exit")
+buttonRestart = Button(100, 100, 300, 100, "Restart")
+
 
 running = True
 # Цикл игры
@@ -113,13 +115,38 @@ while running:
 
         gameMap.update()
         if gameMap.lose:
-            running = False
+            state = 2
             print("lose")
         all_sprites.draw(screen)
         # После отрисовки всего, переворачиваем экран
         pygame.display.flip()
     elif state == 2:
-        pass
+        clock.tick(FPS)
+        screen.fill((0, 0, 0))
+
+        buttonPlay.update(screen, pygame.mouse.get_pos())
+        buttonExit.update(screen, pygame.mouse.get_pos())
+
+        for event in pygame.event.get():
+            # check for closing window
+            if event.type == pygame.QUIT:
+                running = False
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if buttonPlay.targeted:
+                    pass
+
+                if buttonExit.targeted:
+                    running = False
+
+                    all_sprites = pygame.sprite.Group()
+                    all_sprites.add(player1, player2)
+
+                    gameMap = Map(player1, player2, screen)
+
+                    t1 = threading.Thread(target=listen, args=(client_socket, player2), daemon=False)
+                    t1.start()
+
+        pygame.display.flip()
 
 
 pygame.quit()
