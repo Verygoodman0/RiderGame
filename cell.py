@@ -14,6 +14,6 @@ class Cell():
 
     def update(self, screen):
         if self.color == 1:
-            pygame.draw.rect(screen, (0, 0, 255), ((self.x - 1) * 60 + self.offsetX, (self.y - 1) * 60 + self.offsetY, 60, 60))
+            pygame.draw.rect(screen, (0, 155, 255), ((self.x - 1) * 60 + self.offsetX, (self.y - 1) * 60 + self.offsetY, 60, 60))
         if self.color == 2:
-            pygame.draw.rect(screen, (255, 0, 255), ((self.x - 1) * 60 + self.offsetX, (self.y - 1) * 60 + self.offsetY, 60, 60))
+            pygame.draw.rect(screen, (155, 0, 255), ((self.x - 1) * 60 + self.offsetX, (self.y - 1) * 60 + self.offsetY, 60, 60))

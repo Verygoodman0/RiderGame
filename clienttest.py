@@ -2,7 +2,7 @@ import socket
 import threading
 
 host = "0.tcp.eu.ngrok.io"  # as both code is running on same pc
-port = 17105  # socket server port number
+port = 14435  # socket server port number
 
 client_socket = socket.socket()  # instantiate
 client_socket.connect((host, port))  # connect to the server

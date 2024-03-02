@@ -12,67 +12,81 @@ class Map():
         self.p2OffsetY = 0
         self.screen = screen
         self.map = [[Cell(i + 1, j + 1) for i in range(64)] for j in range(36)]
-        self.map[0][10].paint(2)
         self.lose = False
 
     def update(self):
         if self.player1.moving == 1:
-            if self.player1.relY - 1 > 0 and self.map[self.player1.relY - 2][self.player1.relX - 1].color != 1:
-                self.map[self.player1.relY - 1][self.player1.relX - 1].paint(1)
+            if self.player1.relY - 1 > 0:
+                self.map[self.player1.relY - 1][self.player1.relX - 1].paint(self.player1.trailColor)
                 self.player1.relY -= 1
                 self.p1OffsetY += 60
             else:
-                self.lose = True
+                # self.lose = True
+                pass
         if self.player1.moving == 2:
-            if self.player1.relX - 1 > 0 and self.map[self.player1.relY - 1][self.player1.relX - 2].color != 1:
-                self.map[self.player1.relY - 1][self.player1.relX - 1].paint(1)
+            if self.player1.relX - 1 > 0:
+                self.map[self.player1.relY - 1][self.player1.relX - 1].paint(self.player1.trailColor)
                 self.player1.relX -= 1
                 self.p1OffsetX += 60
             else:
-                self.lose = True
+                # self.lose = True
+                pass
         if self.player1.moving == 3:
-            if self.player1.relY + 1 <= 36  and self.map[self.player1.relY][self.player1.relX - 1].color != 1:
-                self.map[self.player1.relY - 1][self.player1.relX - 1].paint(1)
+            if self.player1.relY + 1 <= 36:
+                self.map[self.player1.relY - 1][self.player1.relX - 1].paint(self.player1.trailColor)
                 self.player1.relY += 1
                 self.p1OffsetY += -60
             else:
-                self.lose = True
+                # self.lose = True
+                pass
+
         if self.player1.moving == 4:
-            if self.player1.relX + 1 <= 64 and self.map[self.player1.relY - 1][self.player1.relX].color != 1:
-                self.map[self.player1.relY - 1][self.player1.relX - 1].paint(1)
+            if self.player1.relX + 1 <= 64:
+                self.map[self.player1.relY - 1][self.player1.relX - 1].paint(self.player1.trailColor)
                 self.player1.relX += 1
                 self.p1OffsetX += -60
             else:
-                self.lose = True
+                # self.lose = True
+                pass
+
         
         if self.player2.moving == 1:
-            if self.player2.relY - 1 > 0 and self.map[self.player2.relY - 2][self.player2.relX - 1].color != 1:
-                self.map[self.player2.relY - 1][self.player2.relX - 1].paint(1)
+            if self.player2.relY - 1 > 0:
+                self.map[self.player2.relY - 1][self.player2.relX - 1].paint(self.player2.trailColor)
                 self.player2.relY -= 1
+                #  self.player2.rect.y -= 60
                 self.p2OffsetY += 60
             else:
-                self.lose = True
+                # self.lose = True
+                pass
         if self.player2.moving == 2:
-            if self.player2.relX - 1 > 0 and self.map[self.player2.relY - 1][self.player2.relX - 2].color != 1:
-                self.map[self.player2.relY - 1][self.player2.relX - 1].paint(1)
+            if self.player2.relX - 1 > 0:
+                self.map[self.player2.relY - 1][self.player2.relX - 1].paint(self.player2.trailColor)
                 self.player2.relX -= 1
+                # self.player2.rect.x -= 60
                 self.p2OffsetX += 60
             else:
-                self.lose = True
+                # self.lose = True
+                pass
         if self.player2.moving == 3:
-            if self.player2.relY + 1 <= 36  and self.map[self.player2.relY][self.player2.relX - 1].color != 1:
-                self.map[self.player2.relY - 1][self.player2.relX - 1].paint(1)
+            if self.player2.relY + 1 <= 36:
+                self.map[self.player2.relY - 1][self.player2.relX - 1].paint(self.player2.trailColor)
                 self.player2.relY += 1
+                # self.player2.rect.y += 60
                 self.p2OffsetY += -60
             else:
-                self.lose = True
+                # self.lose = True
+                pass
+
         if self.player2.moving == 4:
-            if self.player2.relX + 1 <= 64 and self.map[self.player2.relY - 1][self.player2.relX].color != 1:
-                self.map[self.player2.relY - 1][self.player2.relX - 1].paint(1)
+            if self.player2.relX + 1 <= 64:
+                self.map[self.player2.relY - 1][self.player2.relX - 1].paint(self.player2.trailColor)
                 self.player2.relX += 1
+                # self.player2.rect.x += 60
                 self.p2OffsetX += -60
             else:
-                self.lose = True
+                # self.lose = True
+                pass
 
         for i in range(len(self.map)):
             for j in range(len(self.map[i])):
@@ -80,7 +94,7 @@ class Map():
                 self.map[i][j].offsetY = self.p1OffsetY
                 self.map[i][j].update(self.screen)
 
-        self.player1.coord()
+        self.player2.coord(self.p1OffsetX, self.p1OffsetY)
         self.drawMap(self.screen)
 
     def drawMap(self, screen):
