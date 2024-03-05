@@ -47,7 +47,7 @@ state = 0
 buttonPlay = Button(810, 540, 300, 100, "Play")
 buttonExit = Button(810, 740, 300, 100, "Exit")
 buttonRestart = Button(100, 100, 300, 100, "Restart")
-labelLose = Label(960, 300, "Ya ghoul😈")
+labelLose = Label(885, 300, "Ya ghoul😈")
 
 
 running = True
