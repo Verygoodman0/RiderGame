@@ -21,32 +21,36 @@ class Map():
                 self.player1.relY -= 1
                 self.p1OffsetY += 60
             else:
-                self.lose = 1
-                client_socket.send("lose".encode())
+                data = f"lose{self.player1.trailColor}"
+                self.lose = self.player1.trailColor
+                client_socket.send(data.encode())
         if self.player1.moving == 2:
             if self.player1.relX - 1 > 0 and self.map[self.player1.relY - 1][self.player1.relX - 2].color != 1:
                 self.map[self.player1.relY - 1][self.player1.relX - 1].paint(self.player1.trailColor)
                 self.player1.relX -= 1
                 self.p1OffsetX += 60
             else:
-                self.lose = 1
-                client_socket.send("lose".encode())
+                data = f"lose{self.player1.trailColor}"
+                self.lose = self.player1.trailColor
+                client_socket.send(data.encode())
         if self.player1.moving == 3:
             if self.player1.relY + 1 <= 36 and self.map[self.player1.relY][self.player1.relX - 1].color != 1:
                 self.map[self.player1.relY - 1][self.player1.relX - 1].paint(self.player1.trailColor)
                 self.player1.relY += 1
                 self.p1OffsetY += -60
             else:
-                self.lose = 1
-                client_socket.send("lose".encode())
+                data = f"lose{self.player1.trailColor}"
+                self.lose = self.player1.trailColor
+                client_socket.send(data.encode())
         if self.player1.moving == 4:
             if self.player1.relX + 1 <= 64 and self.map[self.player1.relY - 1][self.player1.relX].color != 1:
                 self.map[self.player1.relY - 1][self.player1.relX - 1].paint(self.player1.trailColor)
                 self.player1.relX += 1
                 self.p1OffsetX += -60
             else:
-                self.lose = 1
-                client_socket.send("lose".encode())
+                data = f"lose{self.player1.trailColor}"
+                self.lose = self.player1.trailColor
+                client_socket.send(data.encode())
 
         
         if self.player2.moving == 1:

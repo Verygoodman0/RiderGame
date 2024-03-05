@@ -17,18 +17,22 @@ def listen(server, player):
                 cmd = data.split("=")
                 if cmd[0] == "moving":
                     player.moving = int(cmd[1])
-                if cmd[0] == "lose":
-                    lose()
+                if "lose" in cmd[0]:
+                    lose(int(cmd[0][-1]))
         except Exception:
             pass
 
-def lose():
+
+def lose(color):
     global state
 
     state = 2
-    labelLose.setText("lose 1")
-    print("lose 1")
+    if color == 1:
+        labelLose.setText("lose blue")
+    else:
+        labelLose.setText("lose purple")
 
+    gameMap.lose = 0
 
 
 FPS = 60
@@ -123,8 +127,8 @@ while running:
         screen.fill((0, 0, 0))
 
         gameMap.update(client_socket)
-        if gameMap.lose == 1:
-            lose()
+        if gameMap.lose != 0:
+            lose(gameMap.lose)
         all_sprites.draw(screen)
         # После отрисовки всего, переворачиваем экран
         pygame.display.flip()
