@@ -5,6 +5,7 @@ import threading
 from map import Map
 from player import Player
 from misc.button import Button
+from misc.label import Label
 
 
 def listen(server, player):
@@ -12,12 +13,21 @@ def listen(server, player):
         try:
             data = server.recv(1024).decode()
             if data != "":
-                print(f"data from server: {data}")
+                # print(f"data from server: {data}")
                 cmd = data.split("=")
                 if cmd[0] == "moving":
                     player.moving = int(cmd[1])
+                if cmd[0] == "lose":
+                    lose()
         except Exception:
             pass
+
+def lose():
+    global state
+
+    state = 2
+    labelLose.setText("lose 1")
+    print("lose 1")
 
 
 
@@ -30,16 +40,14 @@ screen = pygame.display.set_mode((1920, 1080), pygame.SCALED + pygame.NOFRAME + 
 pygame.display.set_caption("My Game")
 clock = pygame.time.Clock()
 
-ip = "2.tcp.eu.ngrok.io"
-port = 15219
-
-client_socket = socket.socket()
-client_socket.connect((ip, port))
+ip = "0.tcp.eu.ngrok.io"
+port = 15678
 
 state = 0
-buttonPlay = Button(100, 100, 300, 100, "Play")
-buttonExit = Button(100, 300, 300, 100, "Exit")
+buttonPlay = Button(810, 540, 300, 100, "Play")
+buttonExit = Button(810, 740, 300, 100, "Exit")
 buttonRestart = Button(100, 100, 300, 100, "Restart")
+labelLose = Label(960, 300, "Ya ghoul😈")
 
 
 running = True
@@ -60,7 +68,8 @@ while running:
                 if buttonPlay.targeted:
                     FPS = 30
                     state = 1
-                    print("zxc")
+                    client_socket = socket.socket()
+                    client_socket.connect((ip, port))
                     data = client_socket.recv(1024).decode()
                     if data.split("=")[0] == "start":
                         if data.split("=")[1] == "1":
@@ -72,9 +81,6 @@ while running:
                             player1 = Player(17, 9, (255, 0, 0), 2)
                             running = True
 
-                if buttonExit.targeted:
-                    running = False
-
                     all_sprites = pygame.sprite.Group()
                     all_sprites.add(player1, player2)
 
@@ -82,6 +88,9 @@ while running:
 
                     t1 = threading.Thread(target=listen, args=(client_socket, player2), daemon=False)
                     t1.start()
+
+                if buttonExit.targeted:
+                    running = False
 
         pygame.display.flip()
     elif state == 1:
@@ -113,10 +122,9 @@ while running:
         # Рендеринг
         screen.fill((0, 0, 0))
 
-        gameMap.update()
-        if gameMap.lose:
-            state = 2
-            print("lose")
+        gameMap.update(client_socket)
+        if gameMap.lose == 1:
+            lose()
         all_sprites.draw(screen)
         # После отрисовки всего, переворачиваем экран
         pygame.display.flip()
@@ -126,6 +134,7 @@ while running:
 
         buttonPlay.update(screen, pygame.mouse.get_pos())
         buttonExit.update(screen, pygame.mouse.get_pos())
+        labelLose.update(screen)
 
         for event in pygame.event.get():
             # check for closing window
@@ -137,14 +146,6 @@ while running:
 
                 if buttonExit.targeted:
                     running = False
-
-                    all_sprites = pygame.sprite.Group()
-                    all_sprites.add(player1, player2)
-
-                    gameMap = Map(player1, player2, screen)
-
-                    t1 = threading.Thread(target=listen, args=(client_socket, player2), daemon=False)
-                    t1.start()
 
         pygame.display.flip()
 

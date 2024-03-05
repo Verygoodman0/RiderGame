@@ -28,3 +28,7 @@ class Button():
         text = self.font.render(self.text, False, (0, 0, 0))
 
         screen.blit(text, (self.x, self.y))
+
+    def setPosition(self, x, y):
+        self.x = x
+        self.y = y

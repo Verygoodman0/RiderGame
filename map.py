@@ -12,42 +12,41 @@ class Map():
         self.p2OffsetY = 0
         self.screen = screen
         self.map = [[Cell(i + 1, j + 1) for i in range(64)] for j in range(36)]
-        self.lose = False
+        self.lose = 0
 
-    def update(self):
+    def update(self, client_socket):
         if self.player1.moving == 1:
-            if self.player1.relY - 1 > 0:
+            if self.player1.relY - 1 > 0 and self.map[self.player1.relY - 2][self.player1.relX - 1].color != 1:
                 self.map[self.player1.relY - 1][self.player1.relX - 1].paint(self.player1.trailColor)
                 self.player1.relY -= 1
                 self.p1OffsetY += 60
             else:
-                # self.lose = True
-                pass
+                self.lose = 1
+                client_socket.send("lose".encode())
         if self.player1.moving == 2:
-            if self.player1.relX - 1 > 0:
+            if self.player1.relX - 1 > 0 and self.map[self.player1.relY - 1][self.player1.relX - 2].color != 1:
                 self.map[self.player1.relY - 1][self.player1.relX - 1].paint(self.player1.trailColor)
                 self.player1.relX -= 1
                 self.p1OffsetX += 60
             else:
-                # self.lose = True
-                pass
+                self.lose = 1
+                client_socket.send("lose".encode())
         if self.player1.moving == 3:
-            if self.player1.relY + 1 <= 36:
+            if self.player1.relY + 1 <= 36 and self.map[self.player1.relY][self.player1.relX - 1].color != 1:
                 self.map[self.player1.relY - 1][self.player1.relX - 1].paint(self.player1.trailColor)
                 self.player1.relY += 1
                 self.p1OffsetY += -60
             else:
-                # self.lose = True
-                pass
-
+                self.lose = 1
+                client_socket.send("lose".encode())
         if self.player1.moving == 4:
-            if self.player1.relX + 1 <= 64:
+            if self.player1.relX + 1 <= 64 and self.map[self.player1.relY - 1][self.player1.relX].color != 1:
                 self.map[self.player1.relY - 1][self.player1.relX - 1].paint(self.player1.trailColor)
                 self.player1.relX += 1
                 self.p1OffsetX += -60
             else:
-                # self.lose = True
-                pass
+                self.lose = 1
+                client_socket.send("lose".encode())
 
         
         if self.player2.moving == 1:
