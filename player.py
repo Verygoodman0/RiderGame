@@ -8,12 +8,18 @@ class Player(pygame.sprite.Sprite):
         self.image.fill(color)
         self.rect = self.image.get_rect()
         self.trailColor = trailColor
-        self.relX = x
-        self.relY = y
-        self.rect.x = (self.relX - 1) * 60
-        self.rect.y = (self.relY - 1) * 60
-        self.moving = 3
+        self.startX = x
+        self.startY = y
+
+        self.start()
 
     def coord(self, ox, oy):
         self.rect.x = (self.relX - 1) * 60 + ox
         self.rect.y = (self.relY - 1) * 60 + oy
+
+    def start(self):
+        self.relX = self.startX
+        self.relY = self.startY
+        self.rect.x = (self.relX - 1) * 60
+        self.rect.y = (self.relY - 1) * 60
+        self.moving = 3

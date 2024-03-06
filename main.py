@@ -9,6 +9,8 @@ from misc.label import Label
 
 
 def listen(server, player):
+    global player1, player2, gameMap, state
+
     while 1:
         try:
             data = server.recv(1024).decode()
@@ -19,6 +21,20 @@ def listen(server, player):
                     player.moving = int(cmd[1])
                 if "lose" in cmd[0]:
                     lose(int(cmd[0][-1]))
+                if "start" in cmd[0]:
+                    if cmd.split("=")[1] == "1":
+                        player1 = Player(16, 9, (0, 0, 255), 1)
+                        player2 = Player(17, 9, (255, 0, 0), 2)
+                    else:
+                        player2 = Player(16, 9, (0, 0, 255), 1)
+                        player1 = Player(17, 9, (255, 0, 0), 2)
+
+                all_sprites = pygame.sprite.Group()
+                all_sprites.add(player1, player2)
+
+                gameMap = Map(player1, player2, screen)
+                state = 1
+
         except Exception:
             pass
 
@@ -33,7 +49,9 @@ def lose(color):
         labelLose.setText("lose purple")
 
     gameMap.lose = 0
-
+    client_socket.close()
+    player1.start()
+    player2.start()     
 
 FPS = 60
 
@@ -50,7 +68,7 @@ port = 15678
 state = 0
 buttonPlay = Button(810, 540, 300, 100, "Play")
 buttonExit = Button(810, 740, 300, 100, "Exit")
-buttonRestart = Button(100, 100, 300, 100, "Restart")
+buttonRestart = Button(810, 540, 300, 100, "Restart")
 labelLose = Label(885, 300, "Ya ghoul😈")
 
 
@@ -136,7 +154,7 @@ while running:
         clock.tick(FPS)
         screen.fill((0, 0, 0))
 
-        buttonPlay.update(screen, pygame.mouse.get_pos())
+        buttonRestart.update(screen, pygame.mouse.get_pos())
         buttonExit.update(screen, pygame.mouse.get_pos())
         labelLose.update(screen)
 
@@ -145,8 +163,9 @@ while running:
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                if buttonPlay.targeted:
-                    pass
+                if buttonRestart.targeted:
+                    client_socket.send("restart".encode())
+
 
                 if buttonExit.targeted:
                     running = False
