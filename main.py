@@ -40,6 +40,8 @@ def listen(server, player):
                     all_sprites = pygame.sprite.Group()
                     all_sprites.add(player1, player2)
 
+                    player = player2
+
                     gameMap = Map(player1, player2, screen)
                     state = 1
 
