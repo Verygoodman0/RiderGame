@@ -16,7 +16,7 @@ class Map():
 
     def update(self, client_socket):
         if self.player1.moving == 1:
-                if self.player1.relY - 1 > 0 and self.map[self.player1.relY - 2][self.player1.relX - 1].color != 1 and self.map[self.player1.relY - 2][self.player1.relX - 1].color != 2:
+            if self.player1.relY - 1 > 0 and self.map[self.player1.relY - 2][self.player1.relX - 1].color != 1 and self.map[self.player1.relY - 2][self.player1.relX - 1].color != 2:
                 self.map[self.player1.relY - 1][self.player1.relX - 1].paint(self.player1.trailColor)
                 self.player1.relY -= 1
                 self.p1OffsetY += 60
