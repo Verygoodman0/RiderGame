@@ -12,7 +12,6 @@ class Button():
         self.color = color
         self.tcolor = tcolor
 
-
         self.targeted = False
 
     def update(self, screen, mouse):

@@ -9,38 +9,46 @@ from misc.label import Label
 
 
 def listen(server, player):
-    global player1, player2, gameMap, state
+    global player1, player2, gameMap, state, all_sprites
 
     while 1:
         try:
             data = server.recv(1024).decode()
             if data != "":
-                # print(f"data from server: {data}")
+                print(f"data from server: {data}")
                 cmd = data.split("=")
                 if cmd[0] == "moving":
                     player.moving = int(cmd[1])
                 if "lose" in cmd[0]:
                     lose(int(cmd[0][-1]))
                 if "start" in cmd[0]:
-                    if cmd.split("=")[1] == "1":
+                    player1 = None
+                    player2 = None
+                    if id == 1:
                         player1 = Player(16, 9, (0, 0, 255), 1)
                         player2 = Player(17, 9, (255, 0, 0), 2)
-                    else:
+                    elif id == 2:
                         player2 = Player(16, 9, (0, 0, 255), 1)
                         player1 = Player(17, 9, (255, 0, 0), 2)
 
-                all_sprites = pygame.sprite.Group()
-                all_sprites.add(player1, player2)
+                    else:
+                        print("мефа ебнул????")
 
-                gameMap = Map(player1, player2, screen)
-                state = 1
+                    all_sprites = None
+                    gameMap = None
+
+                    all_sprites = pygame.sprite.Group()
+                    all_sprites.add(player1, player2)
+
+                    gameMap = Map(player1, player2, screen)
+                    state = 1
 
         except Exception:
             pass
 
 
 def lose(color):
-    global state
+    global state, gameMap, player1, player2
 
     state = 2
     if color == 1:
@@ -49,11 +57,16 @@ def lose(color):
         labelLose.setText("lose purple")
 
     gameMap.lose = 0
-    client_socket.close()
+    player1.moving = 0
+    player2.moving = 0
+    #
     player1.start()
-    player2.start()     
+    player2.start()
+    # client_socket.close()
+    # player1.start()
+    # player2.start()
 
-FPS = 60
+FPS = 30
 
 # Создаем игру и окно
 pygame.init()
@@ -63,9 +76,10 @@ pygame.display.set_caption("My Game")
 clock = pygame.time.Clock()
 
 ip = "0.tcp.eu.ngrok.io"
-port = 15678
+port = 19709
 
 state = 0
+id = -1
 buttonPlay = Button(810, 540, 300, 100, "Play")
 buttonExit = Button(810, 740, 300, 100, "Exit")
 buttonRestart = Button(810, 540, 300, 100, "Restart")
@@ -95,10 +109,12 @@ while running:
                     data = client_socket.recv(1024).decode()
                     if data.split("=")[0] == "start":
                         if data.split("=")[1] == "1":
+                            id = 1
                             player1 = Player(16, 9, (0, 0, 255), 1)
                             player2 = Player(17, 9, (255, 0, 0), 2)
                             running = True
                         else:
+                            id = 2
                             player2 = Player(16, 9, (0, 0, 255), 1)
                             player1 = Player(17, 9, (255, 0, 0), 2)
                             running = True
@@ -165,7 +181,6 @@ while running:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if buttonRestart.targeted:
                     client_socket.send("restart".encode())
-
 
                 if buttonExit.targeted:
                     running = False
