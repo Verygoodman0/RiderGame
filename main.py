@@ -25,14 +25,18 @@ def listen(server, player):
                     player1 = None
                     player2 = None
                     if id == 1:
-                        player1 = Player(16, 9, (0, 0, 255), 1)
-                        player2 = Player(17, 9, (255, 0, 0), 2)
+                        player1 = Player(0, 0, (0, 0, 255), 1)
+                        player2 = Player(64, 36, (255, 0, 0), 2)
+                        player1.moving = 3
+                        player2.moving = 1
                     elif id == 2:
-                        player2 = Player(16, 9, (0, 0, 255), 1)
-                        player1 = Player(17, 9, (255, 0, 0), 2)
+                        player2 = Player(0, 0, (0, 0, 255), 1)
+                        player1 = Player(64, 36, (255, 0, 0), 2)
+                        player1.moving = 1
+                        player2.moving = 3
 
                     else:
-                        print("мефа ебнул????")
+                        pass
 
                     all_sprites = None
                     gameMap = None
@@ -86,6 +90,7 @@ buttonPlay = Button(810, 540, 300, 100, "Play")
 buttonExit = Button(810, 740, 300, 100, "Exit")
 buttonRestart = Button(810, 540, 300, 100, "Restart")
 labelLose = Label(885, 300, "Ya ghoul😈")
+labelWaiting = Label(810, 440, "")
 
 
 running = True
@@ -97,6 +102,7 @@ while running:
 
         buttonPlay.update(screen, pygame.mouse.get_pos())
         buttonExit.update(screen, pygame.mouse.get_pos())
+        labelWaiting.update(screen)
 
         for event in pygame.event.get():
             # check for closing window
@@ -106,19 +112,26 @@ while running:
                 if buttonPlay.targeted:
                     FPS = 30
                     state = 1
+                    labelWaiting.setText("waiting for other player")
+                    labelWaiting.update(screen)
+                    pygame.display.flip()
                     client_socket = socket.socket()
                     client_socket.connect((ip, port))
                     data = client_socket.recv(1024).decode()
                     if data.split("=")[0] == "start":
                         if data.split("=")[1] == "1":
                             id = 1
-                            player1 = Player(16, 9, (0, 0, 255), 1)
-                            player2 = Player(17, 9, (255, 0, 0), 2)
+                            player1 = Player(0, 0, (0, 0, 255), 1)
+                            player2 = Player(64, 36, (255, 0, 0), 2)
+                            player1.moving = 3
+                            player2.moving = 1
                             running = True
                         else:
                             id = 2
-                            player2 = Player(16, 9, (0, 0, 255), 1)
-                            player1 = Player(17, 9, (255, 0, 0), 2)
+                            player2 = Player(0, 0, (0, 0, 255), 1)
+                            player1 = Player(64, 36, (255, 0, 0), 2)
+                            player1.moving = 1
+                            player2.moving = 3
                             running = True
 
                     all_sprites = pygame.sprite.Group()
@@ -175,6 +188,7 @@ while running:
         buttonRestart.update(screen, pygame.mouse.get_pos())
         buttonExit.update(screen, pygame.mouse.get_pos())
         labelLose.update(screen)
+        labelWaiting.update(screen)
 
         for event in pygame.event.get():
             # check for closing window
@@ -183,6 +197,7 @@ while running:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if buttonRestart.targeted:
                     client_socket.send("restart".encode())
+                    labelWaiting.setText("waiting for other player")
 
                 if buttonExit.targeted:
                     running = False

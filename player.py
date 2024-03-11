@@ -10,7 +10,7 @@ class Player(pygame.sprite.Sprite):
         self.trailColor = trailColor
         self.startX = x
         self.startY = y
-        self.moving = 3
+        self.moving = 0
 
         self.start()
 
