@@ -132,6 +132,7 @@ while running:
                             gameMap = Map(player1, player2, screen)
                             gameMap.p1OffsetX = player1.rect.x + 960
                             gameMap.p1OffsetY = player1.rect.y + 540
+                            player1.coord(gameMap.p1OffsetX, gameMap.p1OffsetY)
                             running = True
                         else:
                             id = 2
@@ -142,6 +143,7 @@ while running:
                             gameMap = Map(player1, player2, screen)
                             gameMap.p1OffsetX = -player1.rect.x + 960
                             gameMap.p1OffsetY = -player1.rect.y + 540
+                            player1.coord(gameMap.p1OffsetX, gameMap.p1OffsetY)
                             running = True
 
                     all_sprites = pygame.sprite.Group()
