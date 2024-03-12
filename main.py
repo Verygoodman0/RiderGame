@@ -70,6 +70,9 @@ def lose(color):
         labelLose.setText("lose purple")
         blueScore += 1
 
+    labelRedScore.setText(f"blue: {blueScore}")
+    labelBlueScore.setText(f"red: {redScore}")
+
     gameMap.lose = 0
     player1.moving = 0
     player2.moving = 0
