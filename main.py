@@ -210,8 +210,8 @@ while running:
         buttonExit.update(screen, pygame.mouse.get_pos())
         labelLose.update(screen)
         labelWaiting.update(screen)
-        blueScore.update(screen)
-        redScore.update(screen)
+        labelBlueScore.update(screen)
+        labelRedScore.update(screen)
 
         for event in pygame.event.get():
             # check for closing window
