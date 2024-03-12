@@ -33,6 +33,7 @@ def listen(server, player):
                         gameMap = Map(player1, player2, screen)
                         gameMap.p1OffsetX = player1.rect.x + 960
                         gameMap.p1OffsetY = player1.rect.y + 540
+                        player1.coord(gameMap.p1OffsetX, gameMap.p1OffsetY)
                     elif id == 2:
                         player2 = Player(1, 1, (0, 0, 255), 1)
                         player1 = Player(64, 36, (255, 0, 0), 2)
@@ -41,6 +42,7 @@ def listen(server, player):
                         gameMap = Map(player1, player2, screen)
                         gameMap.p1OffsetX = -player1.rect.x + 960
                         gameMap.p1OffsetY = -player1.rect.y + 540
+                        player1.coord(gameMap.p1OffsetX, gameMap.p1OffsetY)
                     else:
                         pass
 
