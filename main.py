@@ -25,6 +25,10 @@ def listen(server, player):
                     player1 = None
                     player2 = None
                     gameMap = None
+                    blueScore.setText(f"blue: {redScore}")
+                    redScore.setText(f"red: {redScore}")
+                    blueScore.update(screen)
+                    redScore.update(screen)
                     if id == 1:
                         player1 = Player(1, 1, (0, 0, 255), 1)
                         player2 = Player(64, 36, (255, 0, 0), 2)
