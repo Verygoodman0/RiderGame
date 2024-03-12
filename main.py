@@ -60,13 +60,15 @@ def listen(server, player):
 
 
 def lose(color):
-    global state, gameMap, player1, player2
+    global state, gameMap, player1, player2, redScore, blueScore
 
     state = 2
     if color == 1:
         labelLose.setText("lose blue")
+        redScore += 1
     else:
         labelLose.setText("lose purple")
+        blueScore += 1
 
     gameMap.lose = 0
     player1.moving = 0
@@ -92,12 +94,15 @@ port = 16603
 
 state = 0
 id = -1
+blueScore = 0
+redScore = 0
 buttonPlay = Button(810, 540, 300, 100, "Play")
 buttonExit = Button(810, 740, 300, 100, "Exit")
 buttonRestart = Button(810, 540, 300, 100, "Restart")
 labelLose = Label(885, 300, "Ya ghoul😈")
-labelWaiting = Label(810, 440, "")
-
+labelWaiting = Label(620, 440, "")
+labelBlueScore = Label(310, 300, f"blue: {blueScore}")
+labelRedScore = Label(1410, 300, f"red: {redScore}")
 
 running = True
 # Цикл игры
@@ -109,6 +114,8 @@ while running:
         buttonPlay.update(screen, pygame.mouse.get_pos())
         buttonExit.update(screen, pygame.mouse.get_pos())
         labelWaiting.update(screen)
+        labelRedScore.update(screen)
+        labelBlueScore.update(screen)
 
         for event in pygame.event.get():
             # check for closing window
