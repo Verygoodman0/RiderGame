@@ -154,6 +154,8 @@ while running:
                     t1 = threading.Thread(target=listen, args=(client_socket, player2), daemon=False)
                     t1.start()
 
+                    labelWaiting.setText("")
+
                 if buttonExit.targeted:
                     running = False
 
