@@ -8,7 +8,7 @@ class Map():
         self.player2 = player2
         self.p1OffsetX = 0
         self.p1OffsetY = 0
-        self.p2OffsetX = -60
+        self.p2OffsetX = 0
         self.p2OffsetY = 0
         self.screen = screen
         self.map = [[Cell(i + 1, j + 1) for i in range(64)] for j in range(36)]
@@ -25,7 +25,7 @@ class Map():
                 self.lose = self.player1.trailColor
                 client_socket.send(data.encode())
         if self.player1.moving == 2:
-            if self.player1.relX - 1 > 0 and self.map[self.player1.relY - 1][self.player1.relX - 2].color != 1  and self.map[self.player1.relY - 1][self.player1.relX - 2].color != 2:
+            if self.player1.relX - 1 > 0 and self.map[self.player1.relY - 1][self.player1.relX - 2].color != 1 and self.map[self.player1.relY - 1][self.player1.relX - 2].color != 2:
                 self.map[self.player1.relY - 1][self.player1.relX - 1].paint(self.player1.trailColor)
                 self.player1.relX -= 1
                 self.p1OffsetX += 60

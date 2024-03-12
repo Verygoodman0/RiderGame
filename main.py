@@ -24,29 +24,33 @@ def listen(server, player):
                 if "start" in cmd[0]:
                     player1 = None
                     player2 = None
+                    gameMap = None
                     if id == 1:
-                        player1 = Player(0, 0, (0, 0, 255), 1)
+                        player1 = Player(1, 1, (0, 0, 255), 1)
                         player2 = Player(64, 36, (255, 0, 0), 2)
                         player1.moving = 3
                         player2.moving = 1
+                        gameMap = Map(player1, player2, screen)
+                        gameMap.p1OffsetX = player1.rect.x + 960
+                        gameMap.p1OffsetY = player1.rect.y + 540
                     elif id == 2:
-                        player2 = Player(0, 0, (0, 0, 255), 1)
+                        player2 = Player(1, 1, (0, 0, 255), 1)
                         player1 = Player(64, 36, (255, 0, 0), 2)
                         player1.moving = 1
                         player2.moving = 3
-
+                        gameMap = Map(player1, player2, screen)
+                        gameMap.p1OffsetX = -player1.rect.x + 960
+                        gameMap.p1OffsetY = -player1.rect.y + 540
                     else:
                         pass
 
                     all_sprites = None
-                    gameMap = None
 
                     all_sprites = pygame.sprite.Group()
                     all_sprites.add(player1, player2)
 
                     player = player2
 
-                    gameMap = Map(player1, player2, screen)
                     state = 1
 
         except Exception:
@@ -82,7 +86,7 @@ pygame.display.set_caption("My Game")
 clock = pygame.time.Clock()
 
 ip = "0.tcp.eu.ngrok.io"
-port = 19709
+port = 16603
 
 state = 0
 id = -1
@@ -121,23 +125,27 @@ while running:
                     if data.split("=")[0] == "start":
                         if data.split("=")[1] == "1":
                             id = 1
-                            player1 = Player(0, 0, (0, 0, 255), 1)
+                            player1 = Player(1, 1, (0, 0, 255), 1)
                             player2 = Player(64, 36, (255, 0, 0), 2)
                             player1.moving = 3
                             player2.moving = 1
+                            gameMap = Map(player1, player2, screen)
+                            gameMap.p1OffsetX = player1.rect.x + 960
+                            gameMap.p1OffsetY = player1.rect.y + 540
                             running = True
                         else:
                             id = 2
-                            player2 = Player(0, 0, (0, 0, 255), 1)
+                            player2 = Player(1, 1, (0, 0, 255), 1)
                             player1 = Player(64, 36, (255, 0, 0), 2)
                             player1.moving = 1
                             player2.moving = 3
+                            gameMap = Map(player1, player2, screen)
+                            gameMap.p1OffsetX = -player1.rect.x + 960
+                            gameMap.p1OffsetY = -player1.rect.y + 540
                             running = True
 
                     all_sprites = pygame.sprite.Group()
                     all_sprites.add(player1, player2)
-
-                    gameMap = Map(player1, player2, screen)
 
                     t1 = threading.Thread(target=listen, args=(client_socket, player2), daemon=False)
                     t1.start()
