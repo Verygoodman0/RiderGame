@@ -8,6 +8,16 @@ from misc.button import Button
 from misc.label import Label
 
 
+file = open("network_settings.svo", "r")
+np = file.readlines()
+np = list(map(lambda x: x.rstrip(), np))
+ip = np[0]
+port = int(np[1])
+file.close()
+
+print(ip, port)
+
+
 def listen(server, player):
     global player1, player2, gameMap, state, all_sprites
 
@@ -88,12 +98,9 @@ FPS = 30
 # Создаем игру и окно
 pygame.init()
 pygame.mixer.init()
-screen = pygame.display.set_mode((1920, 1080), pygame.SCALED + pygame.NOFRAME + pygame.FULLSCREEN, 32, vsync=1)
-pygame.display.set_caption("My Game")
+screen = pygame.display.set_mode((1960, 1080), pygame.SCALED + pygame.NOFRAME + pygame.FULLSCREEN, 32, vsync=1)
+pygame.display.set_caption("Thron")
 clock = pygame.time.Clock()
-
-ip = "0.tcp.eu.ngrok.io"
-port = 16603
 
 state = 0
 id = -1

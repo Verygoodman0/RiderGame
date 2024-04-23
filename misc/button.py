@@ -12,7 +12,7 @@ class Button():
         self.color = color
         self.tcolor = tcolor
 
-        self.targeted = False
+        self.targeted = False   
 
     def update(self, screen, mouse):
         if self.x < mouse[0] < self.x + self.w and self.y < mouse[1] < self.y + self.h:
